@@ -15,9 +15,10 @@ import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private Realm realm;
     TextView txtView;
-    EditText txtName,txtAge;
+    EditText txtName,txtAge,txtId;
     Button btnAdd,btnView,btnDelete, btnModify;
 
     @Override
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
 
+
+        txtId= (EditText) findViewById(R.id.txtId);
         txtName = (EditText) findViewById(R.id.txtName);
         txtAge = (EditText) findViewById(R.id.txtAge);
         btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -71,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id=txtId.getId();
+                updateFromDatabase(id);
+
+            }
+        });
+
     }
 
     private void deleteFromDatabase(String name, String age) {
@@ -90,6 +102,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void updateFromDatabase(int id) {
+
+        final RealmResults<Person> persons = realm.where(Person.class)
+                .equalTo("id", id)
+                .findAll();
+
+        txtView.setText(id);
+
+
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                // remove single match
+//                persons.
+//
+//            }
+//        });
     }
 
     private void refreshDatabase() {
