@@ -28,7 +28,7 @@ public class Person extends RealmObject {
                 "Edad: " + age+"\n"+"\n"
                ;
     }
-
+//
     String name;
     String age;
 
