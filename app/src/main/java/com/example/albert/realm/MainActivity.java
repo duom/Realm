@@ -77,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
         btnModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id=txtId.getId();
-                updateFromDatabase(id);
+                String name= txtName.getText().toString();
+                String age = txtAge.getText().toString();
+                updateFromDatabase(name,age);
 
             }
         });
@@ -104,23 +105,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updateFromDatabase(int id) {
+    private void updateFromDatabase(final String name, final String age) {
 
-        final RealmResults<Person> persons = realm.where(Person.class)
-                .equalTo("id", id)
-                .findAll();
+        Realm realm = Realm.getDefaultInstance();
 
-        txtView.setText(id);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
 
+                int id = Integer.parseInt(String.valueOf(Integer.parseInt(txtId.getText().toString())));
+                Person person = realm.where(Person.class)
+                        .equalTo("id", id)
+                        .findFirst();
+                if (person != null) {
+                    person.setName(name);
+                    person.setAge(age);
 
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                // remove single match
-//                persons.
-//
-//            }
-//        });
+                    realm.insertOrUpdate(person);
+                    refreshDatabase();
+                }
+
+            }
+
+        });
     }
 
     private void refreshDatabase() {
