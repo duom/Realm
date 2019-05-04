@@ -87,11 +87,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteFromDatabase(String name, String age) {
-
+        int id = Integer.parseInt(String.valueOf(Integer.parseInt(txtId.getText().toString())));
         final RealmResults<Person> persons = realm.where(Person.class)
                 .equalTo("name", name)
                 .or()
                 .equalTo("age", age)
+                .or()
+                .equalTo("id", id)
                 .findAll();
 
 
