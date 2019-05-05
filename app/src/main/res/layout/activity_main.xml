@@ -3,67 +3,99 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-
-    <EditText
-    android:id="@+id/txtName"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
-
-    <EditText
-    android:id="@+id/txtAge"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
-
-    <EditText
-    android:id="@+id/txtId"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <Button
-    android:id="@+id/btnAdd"
-    style="@style/Widget.AppCompat.Button.Colored"
-    android:layout_width="86dp"
-    android:layout_height="50dp"
-    android:text="ADD"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        >
 
-        android:layout_toRightOf="@+id/btnDelete"
-        />
-    <Button
-        android:id="@+id/btnView"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="86dp"
-        android:layout_height="50dp"
-        android:text="REFRESH"
-        android:layout_toRightOf="@+id/btnAdd"
+        <Button
+            android:id="@+id/btnAfegeix"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/btnView"
 
-        />
-    <Button
-        android:id="@+id/btnDelete"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="86dp"
-        android:layout_height="50dp"
-        android:text="DELETE"
+            android:text="ADD" />
 
-        android:layout_alignParentLeft="false"
-        android:layout_toRightOf="@+id/btnModify"
-        />
-    <Button
-        android:id="@+id/btnModify"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="86dp"
-        android:layout_height="50dp"
-        android:text="MODIFY"
-        />
+        <Button
+            android:id="@+id/btnView"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:text="SHOW"
+
+            />
+
+        <Button
+            android:id="@+id/btnElimina"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="false"
+
+            android:layout_toRightOf="@+id/btnModifica"
+            android:text="ERASE" />
+
+        <Button
+            android:id="@+id/btnModifica"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:text="Canvi"
+            android:layout_toRightOf="@+id/btnAfegeix"
+            />
+
+        <Button
+            android:id="@+id/btnBusca"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/btnElimina"
+            android:text="BUSCA" />
     </RelativeLayout>
+
+    <EditText
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:hint="Nom"
+        android:id="@+id/txtNom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginLeft="10dp"
+        android:hint="Edat"
+        android:id="@+id/txtEdat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        />
+
+    <EditText
+        android:layout_marginLeft="10dp"
+        android:id="@+id/txtSexe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sexe"
+        />
+
+
+    <EditText
+        android:layout_marginLeft="10dp"
+        android:hint="ID"
+        android:id="@+id/txtId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        />
+
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
+    android:layout_margin="25dp"
     android:id="@+id/txtView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>

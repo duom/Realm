@@ -24,13 +24,26 @@ public class Person extends RealmObject {
 
     @Override
     public String toString() {
-        return  "\n"+"ID: "+id+"\n"+"Nombre: " + name +"\n"+
-                "Edad: " + age+"\n"+"\n"
+        return  "\n"+
+                "ID: "+id+"\n"+
+                "Nombre: " + name +"\n"+
+                "Edad: " + age+"" +"\n"+
+                "Genero: " + gender +"\n"+"\n"
                ;
     }
 //
     String name;
     String age;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    String gender;
 
     public int getId() {
         return id;

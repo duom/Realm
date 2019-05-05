@@ -1,5 +1,6 @@
 package com.example.albert.realm;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,32 +19,37 @@ public class MainActivity extends AppCompatActivity {
 
     private Realm realm;
     TextView txtView;
-    EditText txtName,txtAge,txtId;
-    Button btnAdd,btnView,btnDelete, btnModify;
+    EditText txtNom, txtEdat,txtId, txtSexe;
+    Button btnAfegeix,btnView, btnElimina, btnModifica, btnBusca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
 
-
-        txtId= (EditText) findViewById(R.id.txtId);
-        txtName = (EditText) findViewById(R.id.txtName);
-        txtAge = (EditText) findViewById(R.id.txtAge);
-        btnAdd = (Button) findViewById(R.id.btnAdd);
-        btnView = (Button) findViewById(R.id.btnView);
-        btnDelete = (Button) findViewById(R.id.btnDelete);
+        txtId= findViewById(R.id.txtId);
+        txtNom = findViewById(R.id.txtNom);
+        txtEdat = findViewById(R.id.txtEdat);
+        txtSexe = findViewById(R.id.txtSexe);
+        btnAfegeix = findViewById(R.id.btnAfegeix);
+        btnView = findViewById(R.id.btnView);
+        btnElimina = findViewById(R.id.btnElimina);
         txtView = findViewById(R.id.txtView);
-        btnModify = findViewById(R.id.btnModify);
+        btnModifica = findViewById(R.id.btnModifica);
+        btnBusca = findViewById(R.id.btnBusca);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+
+
+        btnAfegeix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                saveToDatabase(txtName.getText().toString().trim(), txtAge.getText().toString().trim());
-                calculaID();
-
+                String nom= txtNom.getText().toString();
+                String edat = txtEdat.getText().toString();
+                String sexe = txtSexe.getText().toString();
+                afegeixDatabase(nom,edat,sexe);
             }
         });
 
@@ -51,89 +57,142 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                refreshDatabase()
-;
+                refreshDatabase();
             }
         });
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name=txtName.getText().toString();
-                String age = txtAge.getText().toString();
-                deleteFromDatabase(name,age);
-
-            }
-        });
-
-        btnModify.setOnClickListener(new View.OnClickListener() {
+        btnElimina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if (txtId.getText().toString().length()>0) {
+                    int id = Integer.parseInt(txtId.getText().toString());
+                    String nom = txtNom.getText().toString();
+                    String edat = txtEdat.getText().toString();
+                    String sexe = txtSexe.getText().toString();
 
+                    eliminaDeDatabase(id, nom, edat, sexe);
+                } else {
+
+                    if (txtId.getText().toString().isEmpty()) {
+                        String nom = txtNom.getText().toString();
+                        String edat = txtEdat.getText().toString();
+                        String sexe = txtSexe.getText().toString();
+
+                        eliminaDeDatabaseSenseId(nom, edat, sexe);
+                    }
+                }
             }
         });
 
-        btnModify.setOnClickListener(new View.OnClickListener() {
+        btnModifica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name= txtName.getText().toString();
-                String age = txtAge.getText().toString();
-                updateFromDatabase(name,age);
+                String nom= txtNom.getText().toString();
+                String edat = txtEdat.getText().toString();
+                String sexe = txtSexe.getText().toString();
+                actualitzaDesdeDatabase(nom,edat,sexe);
 
             }
         });
 
+        btnBusca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (txtId.getText().toString().length()>0) {
+                    int id = Integer.parseInt(txtId.getText().toString());
+                    String nom = txtNom.getText().toString();
+                    String edat = txtEdat.getText().toString();
+                    String sexe = txtSexe.getText().toString();
+
+                    actualitzaBusqueda(id, nom, edat, sexe);
+                } else {
+
+                    if (txtId.getText().toString().isEmpty()) {
+                        String name = txtNom.getText().toString();
+                        String edat = txtEdat.getText().toString();
+                        String gender = txtSexe.getText().toString();
+
+                        actualitzaBusquedaSenseId(name, edat, gender);
+                    }
+                }
+            }
+        });
     }
 
-    private void deleteFromDatabase(String name, String age) {
-        int id = Integer.parseInt(String.valueOf(Integer.parseInt(txtId.getText().toString())));
-        final RealmResults<Person> persons = realm.where(Person.class)
-                .equalTo("name", name)
-                .or()
-                .equalTo("age", age)
-                .or()
-                .equalTo("id", id)
-                .findAll();
 
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // remove single match
-                persons.deleteFromRealm(0);
-
-            }
-        });
-    }
-
-    private void updateFromDatabase(final String name, final String age) {
-
+    private void eliminaDeDatabase(final int id, final String name, final String age, final String gender) {
         Realm realm = Realm.getDefaultInstance();
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
 
+
+                Person persons = realm.where(Person.class)
+                        .equalTo("id", id)
+                        .or()
+                        .equalTo("name", name)
+                        .or()
+                        .equalTo("age", age)
+                        .or()
+                        .equalTo("gender", gender)
+                        .findFirst();
+
+                if(persons!= null) {
+                    persons.deleteFromRealm();
+                    refreshDatabase();
+                }}
+        });
+    }
+
+    private void eliminaDeDatabaseSenseId(final String name, final String age, final String gender) {
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+
+                Person persons = realm.where(Person.class)
+                        .equalTo("name", name)
+                        .or()
+                        .equalTo("age", age)
+                        .or()
+                        .equalTo("gender", gender)
+                        .findFirst();
+
+                if(persons!= null) {
+                    persons.deleteFromRealm();
+                    refreshDatabase();
+                }}
+        });
+    }
+
+    private void actualitzaDesdeDatabase(final String name, final String age, final String gender) {
+        Realm realm = Realm.getDefaultInstance();
+
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
                 int id = Integer.parseInt(String.valueOf(Integer.parseInt(txtId.getText().toString())));
                 Person person = realm.where(Person.class)
                         .equalTo("id", id)
                         .findFirst();
-                if (person != null) {
-                    person.setName(name);
-                    person.setAge(age);
-
-                    realm.insertOrUpdate(person);
-                    refreshDatabase();
-                }
+                person.setName(name);
+                person.setAge(age);
+                person.setGender(gender);
+                realm.insertOrUpdate(person);
+                refreshDatabase();
 
             }
-
         });
     }
 
+
     private void refreshDatabase() {
 
+        Realm realm = Realm.getDefaultInstance();
         RealmResults<Person> result = realm.where(Person.class).findAllAsync();
         result.load();
         String output="";
@@ -141,24 +200,64 @@ public class MainActivity extends AppCompatActivity {
         for(Person person : result){
 
             output+=person.toString();
-
         }
-
         txtView.setText(output);
     }
 
-    private void saveToDatabase(final String name, final String age) {
+    private void actualitzaBusqueda(int id, String name, String age, String gender) {
+        Realm realm = Realm.getDefaultInstance();
+        String output="";
+
+        RealmResults<Person> result = realm.where(Person.class)
+
+                .equalTo("id", id)
+                .or()
+                .equalTo("name", name)
+                .or()
+                .equalTo("age", age)
+                .or()
+                .equalTo("gender", gender)
+                .findAll();
+
+        for(Person person : result){
+
+            output+=person.toString();
+        }
+        txtView.setText(output);
+    }
+
+    private void actualitzaBusquedaSenseId(String name, String age, String gender) {
+        Realm realm = Realm.getDefaultInstance();
+        String output="";
+
+        RealmResults<Person> result = realm.where(Person.class)
+
+                .equalTo("name", name)
+                .or()
+                .equalTo("age", age)
+                .or()
+                .equalTo("gender", gender)
+                .findAll();
+
+        for(Person person : result){
+
+            output+=person.toString();
+        }
+        txtView.setText(output);
+    }
 
 
-        final int index= calculaID();
+    private void afegeixDatabase(final String name, final String age, final String gender) {
 
+        Realm realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
-            public void execute(Realm bgRealm) {
-                Person person = bgRealm.createObject(Person.class,index);
+            public void execute(Realm realm) {
+                final int index= calculaID();
+                Person person = realm.createObject(Person.class,index);
                 person.setName(name);
                 person.setAge(age);
-                //person.setId(index);
+                person.setGender(gender);
 
             }
         }, new Realm.Transaction.OnSuccess() {
@@ -189,7 +288,6 @@ public class MainActivity extends AppCompatActivity {
             nextId = currentIdNum.intValue()+1;
         }
         return nextId;
-
     }
 
     @Override
