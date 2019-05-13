@@ -1,10 +1,23 @@
 package com.example.albert.realm.Model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
 
 public class Person extends RealmObject {
 
+
+
+    public String getTelefon() {
+        return telefon;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
+    }
+
+    @Index
+    String telefon;
 
     public String getName() {
         return name;
@@ -28,6 +41,7 @@ public class Person extends RealmObject {
                 "ID: "+id+"\n"+
                 "Nombre: " + name +"\n"+
                 "Edad: " + age+"" +"\n"+
+                "Telefon: " + telefon+"" +"\n"+
                 "Genero: " + gender +"\n"+"\n"
                ;
     }

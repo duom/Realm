@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Realm realm;
     TextView txtView;
-    EditText txtNom, txtEdat,txtId, txtSexe;
+    EditText txtNom, txtEdat,txtId, txtSexe,txtTelefon;
     Button btnAfegeix,btnView, btnElimina, btnModifica, btnBusca;
 
     @Override
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         txtView = findViewById(R.id.txtView);
         btnModifica = findViewById(R.id.btnModifica);
         btnBusca = findViewById(R.id.btnBusca);
+        txtTelefon = findViewById(R.id.txtTelefon);
 
 
 
@@ -49,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 String nom= txtNom.getText().toString();
                 String edat = txtEdat.getText().toString();
                 String sexe = txtSexe.getText().toString();
-                afegeixDatabase(nom,edat,sexe);
+                String telefon = txtTelefon.getText().toString();
+
+                afegeixDatabase(nom,edat,sexe,telefon);
             }
         });
 
@@ -70,16 +73,19 @@ public class MainActivity extends AppCompatActivity {
                     String nom = txtNom.getText().toString();
                     String edat = txtEdat.getText().toString();
                     String sexe = txtSexe.getText().toString();
+                    String telefon = txtTelefon.getText().toString();
 
-                    eliminaDeDatabase(id, nom, edat, sexe);
+
+                    eliminaDeDatabase(id, nom, edat, sexe,telefon);
                 } else {
 
                     if (txtId.getText().toString().isEmpty()) {
                         String nom = txtNom.getText().toString();
                         String edat = txtEdat.getText().toString();
                         String sexe = txtSexe.getText().toString();
+                        String telefon = txtTelefon.getText().toString();
 
-                        eliminaDeDatabaseSenseId(nom, edat, sexe);
+                        eliminaDeDatabaseSenseId(nom, edat, sexe,telefon);
                     }
                 }
             }
@@ -91,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 String nom= txtNom.getText().toString();
                 String edat = txtEdat.getText().toString();
                 String sexe = txtSexe.getText().toString();
-                actualitzaDesdeDatabase(nom,edat,sexe);
+                String telefon = txtTelefon.getText().toString();
+                actualitzaDesdeDatabase(nom,edat,sexe,telefon);
 
             }
         });
@@ -104,16 +111,18 @@ public class MainActivity extends AppCompatActivity {
                     String nom = txtNom.getText().toString();
                     String edat = txtEdat.getText().toString();
                     String sexe = txtSexe.getText().toString();
+                    String telefon = txtTelefon.getText().toString();
 
-                    actualitzaBusqueda(id, nom, edat, sexe);
+                    actualitzaBusqueda(id, nom, edat, sexe,telefon);
                 } else {
 
                     if (txtId.getText().toString().isEmpty()) {
                         String name = txtNom.getText().toString();
                         String edat = txtEdat.getText().toString();
                         String gender = txtSexe.getText().toString();
+                        String telefon = txtTelefon.getText().toString();
 
-                        actualitzaBusquedaSenseId(name, edat, gender);
+                        actualitzaBusquedaSenseId(name, edat, gender,telefon);
                     }
                 }
             }
@@ -121,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void eliminaDeDatabase(final int id, final String name, final String age, final String gender) {
+    private void eliminaDeDatabase(final int id, final String name, final String age, final String gender, final String telefon) {
         Realm realm = Realm.getDefaultInstance();
 
         realm.executeTransaction(new Realm.Transaction() {
@@ -137,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
                         .equalTo("age", age)
                         .or()
                         .equalTo("gender", gender)
+                        .or()
+                        .equalTo("telefon", telefon)
                         .findFirst();
 
                 if(persons!= null) {
@@ -146,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void eliminaDeDatabaseSenseId(final String name, final String age, final String gender) {
+    private void eliminaDeDatabaseSenseId(final String name, final String age, final String gender, final String telefon) {
         Realm realm = Realm.getDefaultInstance();
 
         realm.executeTransaction(new Realm.Transaction() {
@@ -159,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
                         .equalTo("age", age)
                         .or()
                         .equalTo("gender", gender)
+                        .or()
+                        .equalTo("telefon", telefon)
                         .findFirst();
 
                 if(persons!= null) {
@@ -168,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void actualitzaDesdeDatabase(final String name, final String age, final String gender) {
+    private void actualitzaDesdeDatabase(final String name, final String age, final String gender, final String telefon) {
         Realm realm = Realm.getDefaultInstance();
 
 
@@ -182,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 person.setName(name);
                 person.setAge(age);
                 person.setGender(gender);
+                person.setTelefon(telefon);
                 realm.insertOrUpdate(person);
                 refreshDatabase();
 
@@ -204,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         txtView.setText(output);
     }
 
-    private void actualitzaBusqueda(int id, String name, String age, String gender) {
+    private void actualitzaBusqueda(int id, String name, String age, String gender, String telefon) {
         Realm realm = Realm.getDefaultInstance();
         String output="";
 
@@ -217,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
                 .equalTo("age", age)
                 .or()
                 .equalTo("gender", gender)
+                .or()
+                .equalTo("telefon", telefon)
                 .findAll();
 
         for(Person person : result){
@@ -226,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         txtView.setText(output);
     }
 
-    private void actualitzaBusquedaSenseId(String name, String age, String gender) {
+    private void actualitzaBusquedaSenseId(String name, String age, String gender, String telefon) {
         Realm realm = Realm.getDefaultInstance();
         String output="";
 
@@ -237,6 +253,8 @@ public class MainActivity extends AppCompatActivity {
                 .equalTo("age", age)
                 .or()
                 .equalTo("gender", gender)
+                .or()
+                .equalTo("telefon", telefon)
                 .findAll();
 
         for(Person person : result){
@@ -247,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void afegeixDatabase(final String name, final String age, final String gender) {
+    private void afegeixDatabase(final String name, final String age, final String gender, final String telefon) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
@@ -258,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 person.setName(name);
                 person.setAge(age);
                 person.setGender(gender);
+                person.setTelefon(telefon);
 
             }
         }, new Realm.Transaction.OnSuccess() {

@@ -16,7 +16,6 @@
             android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_toRightOf="@+id/btnView"
-
             android:text="ADD" />
 
         <Button
@@ -81,15 +80,24 @@
         android:hint="Sexe"
         />
 
-
     <EditText
         android:layout_marginLeft="10dp"
-        android:hint="ID"
-        android:id="@+id/txtId"
+        android:hint="Telefon"
+        android:id="@+id/txtTelefon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         />
+
+
+    <EditText
+    android:layout_marginLeft="10dp"
+    android:hint="ID"
+    android:id="@+id/txtId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:inputType="number"
+    />
 
 <ScrollView
     android:layout_width="match_parent"
